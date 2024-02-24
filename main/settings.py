@@ -31,6 +31,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+CORS_ALLOWED_ORIGINS = [
+    f"{os.getenv('FRONTEND_BASEURL')}",
+    # "http://localhost:3000",  # Adjust this to the actual origin of your frontend
+    "http://127.0.0.1:3000"
+]
+
 
 # Application definition
 
@@ -50,9 +56,12 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'dj_rest_auth',
     'dj_rest_auth.registration',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -159,9 +168,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 
 # <EMAIL_CONFIRM_REDIRECT_BASE_URL>/<key>
-EMAIL_CONFIRM_REDIRECT_BASE_URL = \
-    "http://localhost:3000/email/confirm/"
+EMAIL_CONFIRM_REDIRECT_BASE_URL = os.getenv('FRONTEND_BASEURL') + os.getenv('EMAIL_CONFIRM_REDIRECT_BASE_URL')
 
 # <PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL>/<uidb64>/<token>/
-PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL = \
-    "http://localhost:3000/password-reset/confirm/"
+PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL =  os.getenv('FRONTEND_BASEURL') + os.getenv('PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL')
